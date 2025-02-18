@@ -4,8 +4,8 @@
 #include <SDL2/SDL.h>
 
 typedef struct {
-    int x, y;
-    int vx, vy;
+  int x, y;
+  int vx, vy;
 } Player;
 
 void update_player(Player *player);
