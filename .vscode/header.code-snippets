@@ -1,0 +1,23 @@
+{
+  "Add include guard": {
+    "prefix": "guard",
+    "description": "Adds an ifndef include guard to a C/C++ header",
+    "body": [
+      "#ifndef __${TM_FILENAME/^([^\\.]*)\\..*$/${1:/upcase}/}_${TM_FILENAME/^.*\\.([^\\.]*)$/${1:/upcase}/}__",
+      "#define __${TM_FILENAME/^([^\\.]*)\\..*$/${1:/upcase}/}_${TM_FILENAME/^.*\\.([^\\.]*)$/${1:/upcase}/}__",
+      "",
+      "$0",
+      "",
+      "#endif // __${TM_FILENAME/^([^\\.]*)\\..*$/${1:/upcase}/}_${TM_FILENAME/^.*\\.([^\\.]*)$/${1:/upcase}/}__",
+      "",
+    ]
+  },
+  "Auto include header file": {
+    "prefix": "includeh",
+    "description": "Auto include C/C++ header file",
+    "body": [
+      "#include \"${TM_FILENAME/(\\.cpp|\\.c)/.h/}\"",
+      "$0",
+    ]
+  }
+}
