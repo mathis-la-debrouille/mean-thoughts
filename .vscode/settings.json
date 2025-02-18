@@ -10,6 +10,7 @@
     "/opt/homebrew/Cellar/sdl2_ttf/2.24.0/include/",
     "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/",
     "/Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk/usr/include/",
-    "/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/usr/include/"
+    "/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/usr/include/",
+    "/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include"
   ],
 }
