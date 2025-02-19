@@ -11,17 +11,30 @@ void game_loop() {
 
     init_renderer(&window, &renderer);
 
+    SDL_Point points[5];
+    points[0].x = 100;
+    points[0].y = 100;
+    points[1].x = 200;
+    points[1].y = 100;
+    points[2].x = 200;
+    points[2].y = 200;
+    points[3].x = 100;
+    points[3].y = 200;   
+    points[4].x = 100;
+    points[4].y = 100;
+
     while (running) {
-        // handle_input(&running);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-        // Set render draw color to white
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_RenderDrawLine(renderer, 0, 0, 800, 600);
 
-      
-        SDL_RenderDrawPoint(renderer, 40, 40);
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_RenderDrawLines(renderer, points, 5);
+
         SDL_RenderPresent(renderer);
-
+ 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = 0;

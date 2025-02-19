@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -I/opt/homebrew/include/SDL2
+CFLAGS = -Wall -Wextra -Werror -I/opt/homebrew/include/
 LDFLAGS = -L/opt/homebrew/lib -lSDL2 -lSDL2_image
 
 SRC = src/main.c src/game.c src/player.c src/background.c src/input.c src/renderer.c

@@ -3,7 +3,10 @@
     "stdlib.h": "c",
     "sdl.h": "c",
     "game.h": "c",
-    "stdbool.h": "c"
+    "stdbool.h": "c",
+    "__bit_reference": "c",
+    "bitset": "c",
+    "unordered_map": "c"
   },
   "C_Cpp.default.systemIncludePath": [
     "/opt/homebrew/Cellar/sdl2/2.32.0/include/",
