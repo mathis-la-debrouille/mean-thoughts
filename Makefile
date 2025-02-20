@@ -1,5 +1,11 @@
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -I/opt/homebrew/include/
+WARNINGS = -pedantic -Wshadow -Wpointer-arith			\
+	-Wcast-align -Wwrite-strings -Wmissing-prototypes	\
+	-Wmissing-declarations -Wredundant-decls		\
+	-Wnested-externs -Winline -Wno-long-long 		\
+	-Wconversion -Wstrict-prototypes			\
+
+CFLAGS = -Wall -Wextra -Werror ${WARNINGS} -I /opt/homebrew/include/ -std=c17
 LDFLAGS = -L/opt/homebrew/lib -lSDL2 -lSDL2_image
 
 SRC = src/main.c src/game.c src/player.c src/background.c src/input.c src/renderer.c

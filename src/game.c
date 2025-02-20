@@ -1,9 +1,12 @@
-#include <SDL2/SDL.h>
+// #include <SDL2/SDL.h>
 #include "game.h"
 #include "renderer.h"
 #include "input.h"
 
-void game_loop() {
+#include <stdbool.h>
+
+void game_loop(void)
+{
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Event event;
@@ -19,11 +22,12 @@ void game_loop() {
     points[2].x = 200;
     points[2].y = 200;
     points[3].x = 100;
-    points[3].y = 200;   
+    points[3].y = 200;
     points[4].x = 100;
     points[4].y = 100;
 
-    while (running) {
+    while (running)
+    {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
@@ -33,15 +37,18 @@ void game_loop() {
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderDrawLines(renderer, points, 5);
 
+        SDL_RenderDrawPoint(renderer, 40, 40);
         SDL_RenderPresent(renderer);
- 
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 running = 0;
             }
         }
 
-        SDL_Delay(16); 
+        SDL_Delay(16);
     }
 
     SDL_DestroyRenderer(renderer);
