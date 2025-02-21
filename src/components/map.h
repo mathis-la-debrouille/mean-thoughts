@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+#include "camera.h"
+
 typedef struct {
     int width;
     int height;
@@ -31,6 +33,6 @@ void destroyMap(Map *map);
 bool checkFileExtension(const char *path);
 Map *allocateMap(void);
 void generateWallPoints(Map *map);
-void renderWalls(Map *map, SDL_Renderer *renderer);
+void renderWalls(Map *map, SDL_Renderer *renderer, Camera *camera);
 
 #endif // __MAP_H__

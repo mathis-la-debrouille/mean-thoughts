@@ -2,6 +2,7 @@
 #include "game.h"
 #include "renderer.h"
 #include "map.h"
+#include "camera.h"
 
 #include <stdbool.h>
 
@@ -15,6 +16,7 @@ void game_loop(void)
     init_renderer(&window, &renderer);
 
     Map *map = newMap("maps/map1.mtmap");
+    Camera *camera = createCamera(0, 0, 0);
 
     printf("------- Map infos -------\n");
     printf("Width: %d\n", map->width);
@@ -25,9 +27,20 @@ void game_loop(void)
     printf("Description: %s\n", map->description);
     printf("Texture Path: %s\n", map->texturePath);
     
+    const Uint8 *keystate;
 
     while (running)
     {
+
+        keystate = SDL_GetKeyboardState(NULL);
+        if (keystate[SDL_SCANCODE_W]) moveCamera(camera, 0.0f, -5.0f, 0.0f);
+        if (keystate[SDL_SCANCODE_S]) moveCamera(camera, 0.0f, 5.0f, 0.0f);
+        if (keystate[SDL_SCANCODE_A]) moveCamera(camera, -5.0f, 0.0f, 0.0f);
+        if (keystate[SDL_SCANCODE_D]) moveCamera(camera, 5.0f, 0.0f, 0.0f);
+        if (keystate[SDL_SCANCODE_Q]) moveCamera(camera, 0.0f, 0.0f, -0.1f); 
+        if (keystate[SDL_SCANCODE_E]) moveCamera(camera, 0.0f, 0.0f, 0.1f);
+
+
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         
         while (SDL_PollEvent(&event))
@@ -40,7 +53,7 @@ void game_loop(void)
 
         SDL_RenderClear(renderer);
 
-        renderWalls(map, renderer);
+        renderWalls(map, renderer, camera);
         
         SDL_RenderPresent(renderer);
 

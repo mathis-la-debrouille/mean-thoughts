@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "map.h"
+#include "camera.h"
 
 #define MAX_LINE_LENGTH 1024
 
@@ -247,23 +248,26 @@ void generateWallPoints(Map *map) {
  * @brief Dessine les murs en SDL en utilisant les points générés.
  * @param map Pointeur vers la carte.
  * @param renderer Renderer SDL2 utilisé pour le dessin.
+ * @param camera Caméra utilisée pour la transformation des points.
  */
-void renderWalls(Map *map, SDL_Renderer *renderer) {
-    if (!map || !map->wallPoints || !renderer) return;
+void renderWalls(Map *map, SDL_Renderer *renderer, Camera *camera) {
+    if (!map || !map->wallPoints || !renderer || !camera) return;
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE); // Blanc
 
     for (int y = 0; y < map->height; y++) {
         for (int i = 0; i < map->wallCounts[y]; i += 4) {
-            // Dessine les 4 lignes du carré
-            SDL_RenderDrawLine(renderer, map->wallPoints[y][i].x, map->wallPoints[y][i].y, 
-                                           map->wallPoints[y][i+1].x, map->wallPoints[y][i+1].y);
-            SDL_RenderDrawLine(renderer, map->wallPoints[y][i+1].x, map->wallPoints[y][i+1].y, 
-                                           map->wallPoints[y][i+2].x, map->wallPoints[y][i+2].y);
-            SDL_RenderDrawLine(renderer, map->wallPoints[y][i+2].x, map->wallPoints[y][i+2].y, 
-                                           map->wallPoints[y][i+3].x, map->wallPoints[y][i+3].y);
-            SDL_RenderDrawLine(renderer, map->wallPoints[y][i+3].x, map->wallPoints[y][i+3].y, 
-                                           map->wallPoints[y][i].x, map->wallPoints[y][i].y);
+            // Transformation des points en fonction de la caméra
+            SDL_Point p1 = transformPoint(map->wallPoints[y][i], camera);
+            SDL_Point p2 = transformPoint(map->wallPoints[y][i+1], camera);
+            SDL_Point p3 = transformPoint(map->wallPoints[y][i+2], camera);
+            SDL_Point p4 = transformPoint(map->wallPoints[y][i+3], camera);
+
+            // Dessin des lignes des murs en prenant en compte la caméra
+            SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
+            SDL_RenderDrawLine(renderer, p2.x, p2.y, p3.x, p3.y);
+            SDL_RenderDrawLine(renderer, p3.x, p3.y, p4.x, p4.y);
+            SDL_RenderDrawLine(renderer, p4.x, p4.y, p1.x, p1.y);
         }
     }
 }

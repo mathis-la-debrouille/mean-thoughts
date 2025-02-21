@@ -32,7 +32,8 @@ SRC = src/game.c \
 	src/legacy/player.c \
 	src/legacy/input.c \
 	src/legacy/physics.c \
-	src/components/map.c
+	src/components/map.c \
+	src/components/camera.c
 
 TEST_SRC = tests/test_map.c
 
@@ -59,3 +60,5 @@ clean:
 
 clean-tests:
 	rm -f $(TEST_EXEC)
+
+re: clean all
