@@ -1,6 +1,6 @@
-# 🎮 Mean Thoughts - Platformer Game
+# 🎮 Mean Thoughts - C Game
 
-Mean Thoughts est un jeu de plateforme écrit en C utilisant **SDL2**.  
+Mean Thoughts est un jeu écrit en C utilisant **SDL2**.  
 Ce projet inclut également un système de **tests unitaires** avec **Criterion**.
 
 ---
