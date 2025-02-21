@@ -28,7 +28,8 @@ void game_loop(void)
 
     while (running)
     {
-
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+        
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
@@ -36,6 +37,12 @@ void game_loop(void)
                 running = 0;
             }
         }
+
+        SDL_RenderClear(renderer);
+
+        renderWalls(map, renderer);
+        
+        SDL_RenderPresent(renderer);
 
         SDL_Delay(16);
     }

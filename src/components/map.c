@@ -54,6 +54,8 @@ Map *newMap(const char *path) {
 
     parseMapTiles(map, file);
 
+    generateWallPoints(map);
+
     fclose(file);
     return map;
 }
@@ -199,5 +201,69 @@ void destroyMap(Map *map) {
     free(map->version);
     free(map->description);
     free(map->texturePath);
+    if (map->wallPoints) {
+        for (int i = 0; i < map->height; i++) {
+            free(map->wallPoints[i]);
+        }
+        free(map->wallPoints);
+    }
+    free(map->wallCounts);
+
     free(map);
+    
+}
+
+/**
+ * @brief Génère les points des murs en fonction de la carte.
+ * @param map Pointeur vers la carte.
+ */
+void generateWallPoints(Map *map) {
+    if (!map || !map->tiles) return;
+
+    int tileSize = 32;
+    map->wallPoints = (SDL_Point **)malloc((size_t)map->height * sizeof(SDL_Point *));
+    map->wallCounts = (int *)calloc((size_t)map->height, sizeof(int));
+
+    for (int y = 0; y < map->height; y++) {
+        map->wallPoints[y] = (SDL_Point *)malloc((size_t)map->width * 4 * sizeof(SDL_Point));
+        int count = 0;
+
+        for (int x = 0; x < map->width; x++) {
+            if (map->tiles[y][x] == 'A') { 
+                int px = x * tileSize;
+                int py = y * tileSize;
+
+                map->wallPoints[y][count++] = (SDL_Point){px, py};
+                map->wallPoints[y][count++] = (SDL_Point){px + tileSize, py};
+                map->wallPoints[y][count++] = (SDL_Point){px + tileSize, py + tileSize};
+                map->wallPoints[y][count++] = (SDL_Point){px, py + tileSize};
+            }
+        }
+        map->wallCounts[y] = count;
+    }
+}
+
+/**
+ * @brief Dessine les murs en SDL en utilisant les points générés.
+ * @param map Pointeur vers la carte.
+ * @param renderer Renderer SDL2 utilisé pour le dessin.
+ */
+void renderWalls(Map *map, SDL_Renderer *renderer) {
+    if (!map || !map->wallPoints || !renderer) return;
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE); // Blanc
+
+    for (int y = 0; y < map->height; y++) {
+        for (int i = 0; i < map->wallCounts[y]; i += 4) {
+            // Dessine les 4 lignes du carré
+            SDL_RenderDrawLine(renderer, map->wallPoints[y][i].x, map->wallPoints[y][i].y, 
+                                           map->wallPoints[y][i+1].x, map->wallPoints[y][i+1].y);
+            SDL_RenderDrawLine(renderer, map->wallPoints[y][i+1].x, map->wallPoints[y][i+1].y, 
+                                           map->wallPoints[y][i+2].x, map->wallPoints[y][i+2].y);
+            SDL_RenderDrawLine(renderer, map->wallPoints[y][i+2].x, map->wallPoints[y][i+2].y, 
+                                           map->wallPoints[y][i+3].x, map->wallPoints[y][i+3].y);
+            SDL_RenderDrawLine(renderer, map->wallPoints[y][i+3].x, map->wallPoints[y][i+3].y, 
+                                           map->wallPoints[y][i].x, map->wallPoints[y][i].y);
+        }
+    }
 }
