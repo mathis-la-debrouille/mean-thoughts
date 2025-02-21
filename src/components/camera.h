@@ -3,6 +3,19 @@
 
 #include <SDL2/SDL.h>
 
+/**
+ * @struct Camera
+ * @brief Structure représentant une caméra dans l'espace 2D avec un effet de profondeur.
+ *
+ * La caméra est utilisée pour transformer les positions des objets à l'écran en fonction :
+ * - **X, Y** : Position de la caméra dans le monde (décalage).
+ * - **Z** : Profondeur qui influence la taille des objets (plus Z est élevé, plus l’objet est petit).
+ *
+ * **Utilisation** :
+ * 1. **Créer une caméra** : `Camera *camera = createCamera(0.0f, 0.0f, 0.0f);`
+ * 2. **Modifier sa position** : `moveCamera(camera, dx, dy, dz);`
+ * 3. **Transformer un point** avant de l'afficher : `SDL_Point p = transformPoint(original, camera);`
+ */
 typedef struct {
     float x, y, z;
 } Camera;
