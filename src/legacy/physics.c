@@ -1,4 +1,6 @@
-int f(int x)
+#include "physics.h"
+
+void funv(void)
 {
-  int toto = 3;
+  return;
 }

@@ -6,12 +6,15 @@
     "stdbool.h": "c",
     "__bit_reference": "c",
     "bitset": "c",
-    "unordered_map": "c"
+    "unordered_map": "c",
+    "map.h": "c"
   },
   "C_Cpp.default.systemIncludePath": [
     "/opt/homebrew/Cellar/sdl2/2.32.0/include/",
     "/opt/homebrew/Cellar/sdl2_image/2.8.5/include/",
     "/opt/homebrew/Cellar/sdl2_ttf/2.24.0/include/",
+    "/opt/homebrew/Cellar/criterion/2.4.2_2/include/criterion/include",
+    "/opt/homebrew/Cellar/criterion/2.4.2_2/include/criterion/lib",
     "/usr/local/include",
     "/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include",
     "/Library/Developer/CommandLineTools/usr/lib/clang/16/include",
