@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "map.h"
 #include "camera.h"
+#include "entity.h"
 
 #include <stdbool.h>
 
@@ -29,6 +30,14 @@ void game_loop(void)
     
     const Uint8 *keystate;
 
+    Entities *entities = createEntities();
+
+    addEntity(entities, 100, 100, ENTITY_PLAYER);
+    addEntity(entities, 200, 150, ENTITY_FRIENDLY);
+    addEntity(entities, 300, 250, ENTITY_HOSTILE);
+    addEntity(entities, 400, 300, ENTITY_NEUTRAL);
+
+
     while (running)
     {
 
@@ -54,11 +63,16 @@ void game_loop(void)
         SDL_RenderClear(renderer);
 
         renderWalls(map, renderer, camera);
-        
+        renderEntities(renderer, entities, camera);
+
         SDL_RenderPresent(renderer);
 
         SDL_Delay(16);
     }
+    
+    destroyMap(map);
+    destroyEntities(entities);
+    destroyCamera(camera);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

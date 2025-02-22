@@ -33,6 +33,7 @@ SRC = src/game.c \
 	src/legacy/input.c \
 	src/legacy/physics.c \
 	src/components/map.c \
+	src/components/entity.c \
 	src/components/camera.c
 
 TEST_SRC = tests/test_map.c
