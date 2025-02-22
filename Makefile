@@ -27,11 +27,8 @@ TEST_LDFLAGS = -L/opt/homebrew/Cellar/criterion/2.4.2_2/lib/ \
 	-lSDL2_image
 
 SRC = src/game.c \
-	src/background.c \
 	src/renderer.c \
-	src/legacy/player.c \
 	src/legacy/input.c \
-	src/legacy/physics.c \
 	src/components/map.c \
 	src/components/entity.c \
 	src/components/camera.c
