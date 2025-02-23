@@ -57,6 +57,7 @@ Map *newMap(const char *path) {
 
     parseMapTiles(map, file);
     generateWallPoints(map);
+    generateCollisionPoints(map);
     fclose(file);
     return map;
 }
@@ -121,12 +122,16 @@ static bool computeMapDimensions(FILE *file, size_t *width, size_t *height) {
 static bool allocateMapData(Map *map) {
     map->tiles = (char **)malloc((size_t)map->height * sizeof(char *));
     map->collisionMap = (bool **)malloc((size_t)map->height * sizeof(bool *));
-    if (!map->tiles || !map->collisionMap) return false;
+    
+    if (!map->tiles || !map->collisionMap)
+        return false;
 
     for (size_t i = 0; i < (size_t)map->height; i++) {
         map->tiles[i] = (char *)malloc((size_t)map->width + 1);
         map->collisionMap[i] = (bool *)malloc((size_t)map->width * sizeof(bool));
-        if (!map->tiles[i] || !map->collisionMap[i]) return false;
+
+        if (!map->tiles[i] || !map->collisionMap[i])
+            return false;
     }
 
     return true;
@@ -218,17 +223,49 @@ void destroyMap(Map *map) {
     free(map);
 }
 
+#include "map.h"
+
+/**
+ * @brief Génère les points de collision de la carte.
+ */
+void generateCollisionPoints(Map *map) {
+    int tileSize = 32;
+    int count;
+
+    if (!map)
+        return;
+
+    map->collisionPoints = (SDL_Point **)malloc((size_t)map->height * sizeof(SDL_Point *));
+    map->collisionCounts = (int *)calloc((size_t)map->height, sizeof(int));
+
+    for (int y = 0; y < map->height; y++) {
+        map->collisionPoints[y] = (SDL_Point *)malloc((size_t)map->width * sizeof(SDL_Point));
+        count = 0;
+
+        for (int x = 0; x < map->width; x++) {
+            if (map->collisionMap[y][x]) {
+                map->collisionPoints[y][count++] = (SDL_Point){(int)(x * tileSize), (int)(y * tileSize)};
+            }
+        }
+
+        map->collisionCounts[y] = count;
+    }
+}
+
+
+
 /**
  * @brief Génère les points des murs en fonction de la carte.
  * @param map Pointeur vers la carte.
  */
 void generateWallPoints(Map *map) {
-    if (!map || !map->tiles)
-        return;
     int tileSize = 32;
     int count = 0;
     int px = 0;
     int py = 0;
+
+    if (!map || !map->tiles)
+        return;
     
     map->wallPoints = (SDL_Point **)malloc((size_t)map->height * sizeof(SDL_Point *));
     map->wallCounts = (int *)calloc((size_t)map->height, sizeof(int));

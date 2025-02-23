@@ -1,5 +1,49 @@
 #include <stdlib.h>
 #include "entity.h"
+#include "map.h" // Pour gérer les collisions
+
+/**
+ * @brief Vérifie si une position est une collision avec la carte.
+ */
+bool checkCollisionWithMap(Entity *entity, Map *map) {
+    int gridX = (int)(entity->x / 32);
+    int gridY = (int)(entity->y / 32);
+
+    if (!entity || !map)
+        return false;
+    if (gridX < 0 || gridY < 0 || gridX >= map->width || gridY >= map->height)
+        return true;
+
+    return (map->collisionMap[gridY][gridX] == true);
+}
+
+/**
+ * @brief Met à jour les entités en appliquant leur déplacement et en gérant les collisions.
+ */
+void updateEntities(Entities *entities, Map *map) {
+    float oldX;
+    float oldY;
+    Entity *entity;
+
+    if (!entities)
+        return;
+
+    for (int i = 0; i < entities->maxEntities; i++) {
+        entity = entities->entities[i];
+        if (!entity || !entity->active)
+            continue;
+
+        oldX = entity->x;
+        oldY = entity->y;
+        entity->x += entity->dx;
+        entity->y += entity->dy;
+
+        if (checkCollisionWithMap(entity, map)) {
+            entity->x = oldX;
+            entity->y = oldY;
+        }
+    }
+}
 
 /**
  * @brief Crée une nouvelle entité et lui assigne une couleur.

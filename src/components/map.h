@@ -26,8 +26,11 @@ typedef struct {
 
     SDL_Point **wallPoints; 
     int *wallCounts;
+    SDL_Point **collisionPoints;
+    int *collisionCounts;
 } Map;
 
+void generateCollisionPoints(Map *map);
 Map *newMap(const char *path);
 void destroyMap(Map *map);
 bool checkFileExtension(const char *path);

@@ -8,7 +8,9 @@
     "bitset": "c",
     "unordered_map": "c",
     "map.h": "c",
-    "__node_handle": "c"
+    "__node_handle": "c",
+    "entity.h": "c",
+    "cstdlib": "c"
   },
   "C_Cpp.default.systemIncludePath": [
     "/opt/homebrew/Cellar/sdl2/2.32.0/include/",

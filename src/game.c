@@ -7,6 +7,25 @@
 
 #include <stdbool.h>
 
+static void handlePlayerInput(Entity *player, const Uint8 *keystate) {
+    float speed = 2.0f;
+
+    if (!player)
+        return;
+
+    player->dx = 0; 
+    player->dy = 0;
+
+    if (keystate[SDL_SCANCODE_W])
+        player->dy = -speed;
+    if (keystate[SDL_SCANCODE_S])
+        player->dy = speed;
+    if (keystate[SDL_SCANCODE_A])
+        player->dx = -speed;
+    if (keystate[SDL_SCANCODE_D])
+        player->dx = speed;
+}
+
 void game_loop(void)
 {
     SDL_Window *window;
@@ -37,25 +56,23 @@ void game_loop(void)
     addEntity(entities, 300, 250, ENTITY_HOSTILE);
     addEntity(entities, 400, 300, ENTITY_NEUTRAL);
 
-
     while (running)
     {
         keystate = SDL_GetKeyboardState(NULL);
-        if (keystate[SDL_SCANCODE_W])
-            moveCamera(camera, 0.0f, -5.0f, 0.0f);
-        if (keystate[SDL_SCANCODE_S])
-            moveCamera(camera, 0.0f, 5.0f, 0.0f);
-        if (keystate[SDL_SCANCODE_A])
-            moveCamera(camera, -5.0f, 0.0f, 0.0f);
-        if (keystate[SDL_SCANCODE_D])
-            moveCamera(camera, 5.0f, 0.0f, 0.0f);
+
         if (keystate[SDL_SCANCODE_Q])
             moveCamera(camera, 0.0f, 0.0f, -0.1f); 
         if (keystate[SDL_SCANCODE_E])
             moveCamera(camera, 0.0f, 0.0f, 0.1f);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-        
+
+        handlePlayerInput(entities->player, keystate);
+
+        updateEntities(entities, map);
+
+        centerCameraOnPoint(camera, entities->player->x, entities->player->y, 800, 600);
+
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)

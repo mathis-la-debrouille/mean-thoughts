@@ -4,8 +4,9 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include "camera.h"
+#include "map.h"
 
-#define MAX_ENTITIES 100
+#define MAX_ENTITIES 1000
 
 /**
  * @enum EntityType
@@ -24,6 +25,7 @@ typedef enum {
  */
 typedef struct {
     float x, y;
+    float dx, dy;
     EntityType type;
     SDL_Color color;
     bool active;
@@ -39,6 +41,16 @@ typedef struct {
     Entity *entities[MAX_ENTITIES];
     Entity *player;
 } Entities;
+
+/**
+ * @brief Applique le déplacement des entités en fonction de leur vecteur.
+ */
+void updateEntities(Entities *entities, Map *map);
+
+/**
+ * @brief Vérifie la collision entre une entité et la carte.
+ */
+bool checkCollisionWithMap(Entity *entity, Map *map);
 
 /**
  * @brief Crée une nouvelle entité et lui assigne une couleur.
